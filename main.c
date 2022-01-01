@@ -44,6 +44,7 @@ typedef struct vars_s {
     uint32 puse_mode;
     uint32 input_size;
     uint32 file_size;
+    uint8  force_pack;
 
     // inner
     uint32 bytes_left;
@@ -235,6 +236,7 @@ vars_t *init_vars()
     v->dict_size = 0xFFFF;
     v->method = 1;
     v->puse_mode = 'p';
+    v->force_pack = 0;
 
     v->read_start_offset = 0;
     v->write_start_offset = 0;
@@ -300,7 +302,7 @@ void update_unpacked_crc(vars_t *v, uint8 b)
 
 void write_to_output(vars_t *v, uint8 b)
 {
-    if (v->packed_size >= (v->file_size - RNC_HEADER_SIZE))
+    if (!v->force_pack && v->packed_size >= (v->file_size - RNC_HEADER_SIZE))
         return;
 
     write_byte(v->output, &v->output_offset, b);
@@ -1625,6 +1627,9 @@ int parse_args(int argc, char **argv, vars_t *vars)
                 sscanf(arg_ptr, "%d", &vars->method);
                 if (!vars->method || vars->method > 2)
                     return 3;
+                break;
+            case 'f':
+                vars->force_pack = 1;
                 break;
             default:
                 break;
