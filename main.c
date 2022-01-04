@@ -1044,7 +1044,7 @@ void do_pack_data(vars_t *v)
     v->packed_size = v->file_size;
     v->bytes_left = v->file_size;
 
-    if (v->file_size <= RNC_HEADER_SIZE)
+    if (!v->force_pack && v->file_size <= RNC_HEADER_SIZE)
         return;
 
     v->unpacked_crc = 0;
@@ -1123,7 +1123,7 @@ void do_pack_data(vars_t *v)
 
 int do_pack(vars_t *v)
 {
-    if (v->file_size <= RNC_HEADER_SIZE)
+    if (!v->force_pack && v->file_size <= RNC_HEADER_SIZE)
         return 2;
 
     v->input_offset = 0;
