@@ -1704,7 +1704,7 @@ int main(int argc, char *argv[])
     if (!error_code && v->puse_mode != 's' && v->puse_mode != 'e')
     {
         FILE *out;
-        if (argc <= 3 || ((argv[3][0] == '-') || (argv[3][0] == '/')))
+        if (argc <= 3 || (argv[3][0] == '-'))
         {
             char out_name[256];
             snprintf(out_name, sizeof(out_name), "%s.%.6zx.bin", argv[2], v->read_start_offset);
